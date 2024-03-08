@@ -15,7 +15,7 @@ type FromFields = z.infer<typeof eventSchema>
 
 function NewEvent() {
  const route = useRouter()
- const { register, control, handleSubmit, formState: {errors} } = useForm<FromFields>({
+ const { register, control, handleSubmit, formState: {errors, isSubmitting} } = useForm<FromFields>({
   resolver: zodResolver(eventSchema)
  })
 
@@ -51,7 +51,7 @@ function NewEvent() {
         />
         {<ErrorHandler>{errors.description?.message}</ErrorHandler>}
 
-        <Button> Submit </Button>
+        <Button> Submit {isSubmitting && <span>...</span>} </Button>
     </form>
     </div>
   )
