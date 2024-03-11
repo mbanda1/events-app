@@ -27,7 +27,10 @@ function EventForm({event}: {event?: Events}) {
   const [error, setError] = useState('')
  const submit = async (data: FormFields) => {
   try {
-    await axios.post('/api/events', data)
+    if (event)
+    await axios.patch(`/api/events/${event.id}`, data)
+  else
+      await axios.post('/api/events', data)
     route.push('/events')
   } catch (error) {
     setError('Error happened !')
@@ -57,7 +60,7 @@ function EventForm({event}: {event?: Events}) {
         />
         {<FormErrors>{errors.description?.message}</FormErrors>}
 
-        <Button> Submit {isSubmitting && <span>...</span>} </Button>
+        <Button> {event ? 'Update': 'Submit'} {isSubmitting && <span>...</span>} </Button>
     </form>
     </div>
   )
