@@ -6,7 +6,7 @@ function editButton({ id }: { id: number }) {
     return (
         <Button>
             <Pencil2Icon />
-            <Link href={`./events/${id}/edit`}> Edit Event </Link>
+            <Link href={`/events/${id}/edit`}> Edit Event </Link>
         </Button>
     )
 }
