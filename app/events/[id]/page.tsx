@@ -28,4 +28,6 @@ async function IssueLoading({ params }: props) {
   )
 }
 
+export const dynamic = 'force-dynamic'
+
 export default IssueLoading

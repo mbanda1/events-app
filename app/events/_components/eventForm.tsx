@@ -32,6 +32,7 @@ function EventForm({event}: {event?: Events}) {
   else
       await axios.post('/api/events', data)
     route.push('/events')
+    route.refresh() //force an automatic refetch
   } catch (error) {
     setError('Error happened !')
   }
