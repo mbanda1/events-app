@@ -2,7 +2,7 @@ import { Events } from '@prisma/client';
 import { Button, Table } from '@radix-ui/themes'
 import Link from 'next/link'
 import React from 'react'
-import StatusBadge from '../components/statusBadge';
+import { StatusBadge } from '@/app/components'
 import prisma from '@/prisma/client';
 
 async function EventsPage() {

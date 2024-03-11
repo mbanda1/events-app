@@ -1,15 +1,18 @@
 'use client'
-import { Button, Callout, Text, TextArea, TextField } from '@radix-ui/themes'
-import React, { useState } from 'react'
-import axios from 'axios';
-import SimpleMDE from "react-simplemde-editor";
-import "easymde/dist/easymde.min.css";
-import { Controller, useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { FormErrors } from '@/app/components';
 import { eventSchema } from '@/app/schema';
-import {z} from 'zod'
-import ErrorHandler from '@/app/components/formErrors';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Callout, TextField } from '@radix-ui/themes';
+import axios from 'axios';
+import "easymde/dist/easymde.min.css";
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { z } from 'zod';
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+  ssr: false  
+})
 
 type FromFields = z.infer<typeof eventSchema>
 
@@ -42,14 +45,14 @@ function NewEvent() {
         <TextField.Root>
             <TextField.Input placeholder='Title' {...register('title')}/>
         </TextField.Root>
-        {<ErrorHandler>{errors.title?.message}</ErrorHandler>}
+        {<FormErrors>{errors.title?.message}</FormErrors>}
 
         <Controller 
           name='description'
           control={control}
           render={({field}) => <SimpleMDE placeholder='Description' {...field} />}
         />
-        {<ErrorHandler>{errors.description?.message}</ErrorHandler>}
+        {<FormErrors>{errors.description?.message}</FormErrors>}
 
         <Button> Submit {isSubmitting && <span>...</span>} </Button>
     </form>
