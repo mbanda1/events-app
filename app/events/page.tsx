@@ -1,20 +1,13 @@
-import { $Enums } from '@prisma/client';
+import { Events } from '@prisma/client';
 import { Button, Table } from '@radix-ui/themes'
 import Link from 'next/link'
 import React from 'react'
-
-interface Events {
-  id: number;
-  title: string;
-  description: string;
-  status: $Enums.Status;
-  createdAt: Date;
-  updatedAt: Date | null;
-}
+import StatusBadge from '../components/statusBadge';
+import prisma from '@/prisma/client';
 
 async function EventsPage() {
   const events: Events[] = await prisma?.events.findMany()
-  
+
   return (
     <div>
       <div>
@@ -38,9 +31,9 @@ async function EventsPage() {
               <Table.Row key={event.id}>
                 <Table.RowHeaderCell>
                   {event.title}
-                  <div className='block md:hidden'>{event.status}</div>
+                  <div className='block md:hidden'><StatusBadge status={event.status} /></div>
                 </Table.RowHeaderCell>
-                <Table.Cell>{event.status}</Table.Cell>
+                <Table.Cell><StatusBadge status={event.status} /></Table.Cell>
                 <Table.Cell className='hidden md:table-cell'>{event.createdAt.toString()}</Table.Cell>
               </Table.Row>
             ))
