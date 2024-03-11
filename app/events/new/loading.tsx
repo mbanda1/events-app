@@ -1,14 +1,3 @@
-import { Box } from '@radix-ui/themes'
-import React from 'react'
-import { Skeleton } from '@/app/components'
+import NewEventLoadingSkelton from '../_components/newEventLoadingSkelton'
 
-function NewEvenLoading() {
-    return (
-        <Box className='max-w-xl'>
-            <Skeleton />
-            <Skeleton />
-        </Box>
-    )
-}
-
-export default NewEvenLoading
+export default NewEventLoadingSkelton

@@ -6,14 +6,11 @@ import { Events } from '@prisma/client';
 import { Button, Callout, TextField } from '@radix-ui/themes';
 import axios from 'axios';
 import "easymde/dist/easymde.min.css";
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import SimpleMDE from 'react-simplemde-editor';
 import { z } from 'zod';
-const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
-  ssr: false  
-})
 
 type FormFields = z.infer<typeof eventSchema>
 
@@ -48,7 +45,7 @@ function EventForm({event}: {event?: Events}) {
       )
      }
     <form  onSubmit={handleSubmit(submit)}>
-        <TextField.Root>
+        <TextField.Root className='mb-4'>
             <TextField.Input defaultValue={event?.title} placeholder='Title' {...register('title')}/>
         </TextField.Root>
         {<FormErrors>{errors.title?.message}</FormErrors>}

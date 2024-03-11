@@ -1,7 +1,14 @@
-import React from 'react'
 import prisma from '@/prisma/client';
+import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
-import EventForm from '../../_components/eventForm';
+import NewEventLoadingSkelton from './loading';
+const EventForm = dynamic(
+  () => import('@/app/events/_components/eventForm'),
+  {
+    ssr: false,
+    loading: () => <NewEventLoadingSkelton/>
+  }
+  )
 
 interface props {
   params: { id: string }
