@@ -30,7 +30,7 @@ async function EventsPage() {
             events.map(event => (
               <Table.Row key={event.id}>
                 <Table.RowHeaderCell>
-                  {event.title}
+                  <Link href={`/events/${event.id}`} className='hover:underline'>{event.title}</Link>
                   <div className='block md:hidden'><StatusBadge status={event.status} /></div>
                 </Table.RowHeaderCell>
                 <Table.Cell><StatusBadge status={event.status} /></Table.Cell>
