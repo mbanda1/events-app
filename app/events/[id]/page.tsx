@@ -1,6 +1,7 @@
 import prisma from '@/prisma/client';
-import { Box, Grid } from '@radix-ui/themes';
+import { Box, Flex, Grid } from '@radix-ui/themes';
 import { notFound } from 'next/navigation';
+import DeleteButton from './deleteButton';
 import EditButton from './editButton';
 import EventDetails from './eventDetails';
 
@@ -16,13 +17,16 @@ async function IssueLoading({ params }: props) {
   if (!event) notFound()
 
   return (
-    <Grid columns={{initial: '1', md: '2'}} gap={'5'}>
-      <Box>
-        <EventDetails event={event}/>
+    <Grid columns={{ initial: '1', sm: '5' }} gap={'5'}>
+      <Box className='md:col-span-4'>
+        <EventDetails event={event} />
       </Box>
 
       <Box>
-        <EditButton id={event.id}/>
+        <Flex direction={'column'} gap={'4'}>
+          <EditButton id={event.id} />
+          <DeleteButton id={event.id} />
+        </Flex>
       </Box>
     </Grid>
   )
