@@ -27,3 +27,20 @@ export async function PATCH(request: NextRequest,
 
     return NextResponse.json(updatedEvent, { status: 200 })
 }
+
+export async function DELETE(request: NextRequest,
+    { params }: { params: { id: string } }) {
+
+    const checkEvent = await prisma.events.findUnique({
+        where: { id: parseInt(params.id) }
+    })
+
+    if (!checkEvent)
+        return NextResponse.json('Invalid event', { status: 404 })
+
+    await prisma.events.delete({
+        where: { id: parseInt(params.id) }
+    })
+
+    return NextResponse.json({}, { status: 200 })
+}
