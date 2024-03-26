@@ -12,7 +12,7 @@ interface props {
   params: { id: string }
 }
 
-async function IssueLoading({ params }: props) {
+async function EventLoading({ params }: props) {
    const session = await getServerSession(authOptions)
 
   const event = await prisma?.events.findUnique({
@@ -40,4 +40,4 @@ async function IssueLoading({ params }: props) {
 
 export const dynamic = 'force-dynamic'
 
-export default IssueLoading
+export default EventLoading

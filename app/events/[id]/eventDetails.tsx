@@ -4,7 +4,7 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Events } from '@prisma/client';
 
-function IssueDetails({event}: {event: Events}) {
+function EventDetails({event}: {event: Events}) {
     return (
         <>
             <Heading>{event.title}</Heading>
@@ -19,4 +19,4 @@ function IssueDetails({event}: {event: Events}) {
     )
 }
 
-export default IssueDetails
+export default EventDetails
