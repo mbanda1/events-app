@@ -1,5 +1,5 @@
 import authOptions from "@/app/auth/authOptions";
-import { eventSchema } from "@/app/schema";
+import { patchEventsSchema } from "@/app/schema";
 import prisma from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -10,22 +10,35 @@ export async function PATCH(request: NextRequest,
    if (!session) return NextResponse.json({}, {status: 401})
 
     const body = await request.json()
-    const validate = eventSchema.safeParse(body)
+    const validate = patchEventsSchema.safeParse(body)
     if (!validate.success)
         return NextResponse.json(validate.error.errors, { status: 400 }) // bad request
-
+    
     const checkEvent = await prisma.events.findUnique({
         where: { id: parseInt(params.id) }
     })
 
     if (!checkEvent)
-        return NextResponse.json('Not found', { status: 404 })
+        return NextResponse.json('Event not found', { status: 404 })
 
+    const { assignedUserId, title, description } = body
+    if (assignedUserId){
+    const checkUserId = await prisma.user.findUnique({
+        where: {
+            id: assignedUserId
+        }
+    })
+
+    if (!checkUserId)
+        return NextResponse.json('Invalid user assigned', { status: 400 })
+    }
+    
     const updatedEvent = await prisma.events.update({
         where: { id: parseInt(params.id) },
         data: {
-            title: body.title,
-            description: body.description
+            title,
+            description,
+            assignedUserId,
         }
     })
 

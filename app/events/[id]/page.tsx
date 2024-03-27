@@ -3,7 +3,7 @@ import prisma from '@/prisma/client';
 import { Box, Flex, Grid } from '@radix-ui/themes';
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
-import SelectAssignee from './assignedSelect';
+import SelectAssignee from './assignedUserSelect';
 import DeleteButton from './deleteButton';
 import EditButton from './editButton';
 import EventDetails from './eventDetails';
@@ -29,7 +29,7 @@ async function EventLoading({ params }: props) {
 
       <Box>
         <Flex direction={'column'} gap={'4'}>
-          <SelectAssignee/>
+          <SelectAssignee event={event}/>
           <EditButton id={event.id} />
           <DeleteButton id={event.id} />
         </Flex>
