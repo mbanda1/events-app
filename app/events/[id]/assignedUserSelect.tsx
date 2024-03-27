@@ -3,6 +3,7 @@ import { Events, User } from '@prisma/client'
 import { Select } from '@radix-ui/themes'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 import Skeleton from 'react-loading-skeleton'
 
 function SelectAssignee({event}: {event: Events}) {
@@ -23,6 +24,8 @@ function SelectAssignee({event}: {event: Events}) {
             onValueChange={(userId) => {
                 axios.patch(`/api/events/${event.id}`, {
                     assignedUserId: userId || null
+                }).catch(() => {
+                    toast.error('An error happened')
                 })
             }}>
                 <Select.Trigger placeholder='Users..' />
