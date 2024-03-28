@@ -25,7 +25,7 @@ async function EventsPage({searchParams}: props) {
       status: status
     },
     orderBy:{
-      [searchParams.orderBy]: 'asc'
+      [searchParams.orderBy ?? 'title']: 'asc'
     }
   })
 
