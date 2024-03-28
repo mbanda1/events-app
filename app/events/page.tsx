@@ -1,17 +1,31 @@
 import { StatusBadge } from '@/app/components';
 import prisma from '@/prisma/client';
 import { Events, Status } from '@prisma/client';
+import { ArrowUpIcon } from '@radix-ui/react-icons';
 import { Button, Flex, Table } from '@radix-ui/themes';
 import Link from 'next/link';
 import EventStatusFilter from './_components/statusFilter';
 
-async function EventsPage({searchParams}: {searchParams : {status: Status}}) {
+const colum: { label: string, value?: keyof Events, className?: string }[] = [
+  { label: 'Event', value: 'title' },
+  { label: 'Status', value: 'status' },
+  { label: 'Created', value: 'createdAt', className: 'hidden md:table-cell' },
+]
+
+type props = {
+    searchParams : {status: Status, orderBy: keyof Events}
+}
+
+async function EventsPage({searchParams}: props) {
   const statuses = Object.values(Status)
   const status = statuses.includes(searchParams.status) ? searchParams.status: undefined
 
   const events: Events[] = await prisma?.events.findMany({
     where: {
       status: status
+    },
+    orderBy:{
+      [searchParams.orderBy]: 'asc'
     }
   })
 
@@ -26,9 +40,16 @@ async function EventsPage({searchParams}: {searchParams : {status: Status}}) {
       <Table.Root variant='surface'>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>Event</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className='hidden md:table-cell'>Created At</Table.ColumnHeaderCell>
+            {
+              colum.map(colum => (
+                <Table.ColumnHeaderCell key={colum.value}>
+                  <Link href={{
+                    query: {...searchParams, orderBy: colum.value}
+                  }}>{colum.label}</Link>
+                  {colum.value === searchParams.orderBy && <ArrowUpIcon className='inline'/>}
+                </Table.ColumnHeaderCell>
+              ))
+            }
           </Table.Row>
         </Table.Header>
 

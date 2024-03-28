@@ -5,8 +5,8 @@ import { Badge } from '@radix-ui/themes'
 
 const statusMap: Record<Status, { label: string, color: "red" | "orange" | "green" }> = {
     OPEN: { label: 'Open', color: 'red' },
-    IN_PROGRESS: { label: 'Open', color: 'orange' },
-    CLOSED: { label: 'Open', color: 'green' }
+    IN_PROGRESS: { label: 'In progress', color: 'orange' },
+    CLOSED: { label: 'Closed', color: 'green' }
 }
 
 function StatusBadge({ status }: { status: Status }) {
