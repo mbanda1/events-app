@@ -28,7 +28,7 @@ function summaryPage({open, inProgress, closed}: props) {
                   <Flex direction={'column'} gap={'1'}>
                     <Link 
                     className='text-sm font-medium'
-                    href={`/events?status${card.status}`}>
+                    href={`/events?status=${card.status}`}>
                         {card.label}
                     </Link>
                     <Text size='5' className='font-bold'>{card.value}</Text>
