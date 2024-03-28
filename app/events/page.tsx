@@ -4,6 +4,7 @@ import { Events, Status } from '@prisma/client';
 import { ArrowUpIcon } from '@radix-ui/react-icons';
 import { Button, Flex, Table } from '@radix-ui/themes';
 import Link from 'next/link';
+import Pagination from '../components/pagination';
 import EventStatusFilter from './_components/statusFilter';
 
 const colum: { label: string, value?: keyof Events, className?: string }[] = [
@@ -13,26 +14,39 @@ const colum: { label: string, value?: keyof Events, className?: string }[] = [
 ]
 
 type props = {
-    searchParams : {status: Status, orderBy: keyof Events}
+  searchParams: {
+    status: Status,
+    orderBy: keyof Events,
+    page: string
+  }
 }
 
-async function EventsPage({searchParams}: props) {
+async function EventsPage({ searchParams }: props) {
   const statuses = Object.values(Status)
-  const status = statuses.includes(searchParams.status) ? searchParams.status: undefined
+  const status = statuses.includes(searchParams.status) ? searchParams.status : undefined
+
+  const page = parseInt(searchParams.page) || 1
+  const pageSize = 5
+
+  const where = { status: status }
 
   const events: Events[] = await prisma?.events.findMany({
-    where: {
-      status: status
-    },
-    orderBy:{
+    where,
+    orderBy: {
       [searchParams.orderBy ?? 'title']: 'asc'
-    }
+    },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  })
+
+  const eventsCounts = await prisma.events.count({
+    where,
   })
 
   return (
     <div>
       <Flex mb='3' justify={'between'}>
-        <EventStatusFilter/>
+        <EventStatusFilter />
         <Button>
           <Link href={'/events/new'}>Add Event</Link>
         </Button>
@@ -44,9 +58,9 @@ async function EventsPage({searchParams}: props) {
               colum.map(colum => (
                 <Table.ColumnHeaderCell key={colum.value}>
                   <Link href={{
-                    query: {...searchParams, orderBy: colum.value}
+                    query: { ...searchParams, orderBy: colum.value }
                   }}>{colum.label}</Link>
-                  {colum.value === searchParams.orderBy && <ArrowUpIcon className='inline'/>}
+                  {colum.value === searchParams.orderBy && <ArrowUpIcon className='inline' />}
                 </Table.ColumnHeaderCell>
               ))
             }
@@ -68,9 +82,14 @@ async function EventsPage({searchParams}: props) {
             ))
           }
 
-
         </Table.Body>
       </Table.Root>
+
+      <Pagination
+        pageSize={pageSize}
+        currentPage={page}
+        itemCount={eventsCounts}
+      />
     </div>
   )
 }
