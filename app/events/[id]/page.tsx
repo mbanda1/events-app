@@ -27,13 +27,12 @@ async function EventLoading({ params }: props) {
         <EventDetails event={event} />
       </Box>
 
-      <Box>
+      {session && <Box>
         <Flex direction={'column'} gap={'4'}>
-          <SelectAssignee event={event}/>
           <EditButton id={event.id} />
           <DeleteButton id={event.id} />
         </Flex>
-      </Box>
+      </Box>}
     </Grid>
   )
 }
