@@ -1,20 +1,28 @@
-import { Events } from '@prisma/client';
-import { Button, Table } from '@radix-ui/themes'
-import Link from 'next/link'
-import React from 'react'
-import { StatusBadge } from '@/app/components'
+import { StatusBadge } from '@/app/components';
 import prisma from '@/prisma/client';
+import { Events, Status } from '@prisma/client';
+import { Button, Flex, Table } from '@radix-ui/themes';
+import Link from 'next/link';
+import EventStatusFilter from './_components/statusFilter';
 
-async function EventsPage() {
-  const events: Events[] = await prisma?.events.findMany()
+async function EventsPage({searchParams}: {searchParams : {status: Status}}) {
+  const statuses = Object.values(Status)
+  const status = statuses.includes(searchParams.status) ? searchParams.status: undefined
+
+  const events: Events[] = await prisma?.events.findMany({
+    where: {
+      status: status
+    }
+  })
 
   return (
     <div>
-      <div>
-        <Button className='mb-3'>
+      <Flex mb='3' justify={'between'}>
+        <EventStatusFilter/>
+        <Button>
           <Link href={'/events/new'}>Add Event</Link>
         </Button>
-      </div>
+      </Flex>
       <Table.Root variant='surface'>
         <Table.Header>
           <Table.Row>
