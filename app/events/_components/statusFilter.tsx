@@ -1,21 +1,30 @@
 'use client'
 import { Status } from '@prisma/client';
 import { Select } from '@radix-ui/themes';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-const statuses: { label: string, state?: Status }[] = [
+const statuses: { label: string, value?: Status }[] = [
     { label: 'All'},
-    { label: 'Open', state: 'OPEN' },
-    { label: 'In progress', state: 'IN_PROGRESS' },
-    { label: 'Closed', state: 'CLOSED' },
+    { label: 'Open', value: 'OPEN' },
+    { label: 'In progress', value: 'IN_PROGRESS' },
+    { label: 'Closed', value: 'CLOSED' },
 ]
 function EventStatusFilter() {
  const route = useRouter()
+ const searchParams = useSearchParams()
 
     return (
         <div>
-            <Select.Root onValueChange={(value) => {
-                const query = !value || value === 'All' ? '' : `?status=${value}`
+            <Select.Root 
+            defaultValue={searchParams.get('status') || ''}
+            onValueChange={(status) => {
+                const params = new URLSearchParams()
+                if (status) params.append('status', status)
+                if (searchParams.get('orderBy'))
+                    params.append('orderBy', searchParams.get('orderBy')!)
+
+
+                const query = !status || status === 'All' ? '' : `?${params.toString()}`
 
                 route.push('/events' + query)
             }}>
@@ -24,7 +33,7 @@ function EventStatusFilter() {
 
                     {
                         statuses?.map(status => {
-                            return <Select.Item key={status.state} value={status.state ?? 'All'}>{status.label}</Select.Item>
+                            return <Select.Item key={status.value} value={status.value ?? 'All'}>{status.label}</Select.Item>
                         })
                     }
 
