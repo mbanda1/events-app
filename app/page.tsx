@@ -1,7 +1,9 @@
+import LatestEvents from "./latestEvents";
+
 export default function Home() {
   return (
     <div>
-            welcome
+            <LatestEvents/>
     </div>
   );
 }
