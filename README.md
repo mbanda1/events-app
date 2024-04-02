@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+![App analytics dashboard](https://github.com/mbanda1/events-app/blob/master/public/dashboard-image.png
+)
+![Events page](https://github.com/mbanda1/events-app/blob/master/public/events-page.png)
+
 ## Getting Started
 
 First, run the development server:
