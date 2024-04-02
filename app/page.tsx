@@ -3,6 +3,7 @@ import { Flex, Grid } from "@radix-ui/themes";
 import LatestEvents from "./latestEvents";
 import SummaryChart from "./summaryChart";
 import SummaryPage from "./summaryPage";
+import { Metadata } from "next";
 
 export default async function Home() {
   const open = await prisma.events.count({
@@ -32,4 +33,10 @@ export default async function Home() {
       <LatestEvents />
     </Grid>
   );
+}
+
+
+export const metadata: Metadata = {
+  title: 'Event management app',
+  description: 'Even inventory app'
 }
